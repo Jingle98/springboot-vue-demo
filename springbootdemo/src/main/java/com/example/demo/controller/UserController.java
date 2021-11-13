@@ -24,6 +24,8 @@ public class UserController {
     @Resource
     UserMapper userMapper;
 
+//    这个接口用来接收前端给的json数据
+//    收到之后，通过insert方法插入到数据库中
     @PostMapping
     public Result<?> save(@RequestBody User user){
         userMapper.insert(user);
