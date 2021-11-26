@@ -1,12 +1,13 @@
 package com.example.demo.controller;
 
+import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
+import com.baomidou.mybatisplus.core.toolkit.StringUtils;
+import com.baomidou.mybatisplus.core.toolkit.Wrappers;
+import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.example.demo.common.Result;
 import com.example.demo.entity.User;
 import com.example.demo.mapper.UserMapper;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import javax.annotation.Resource;
 
@@ -34,5 +35,27 @@ public class UserController {
 //        mybatisPlus提供的方法
         userMapper.insert(user);
         return Result.success();
+    }
+
+    /**
+     * 用户分页列表查询，包含书籍表的一对多查询
+     * @param pageNum
+     * @param pageSize
+     * @param search  在前台定义了关键字
+     * @return
+     */
+    @GetMapping
+    public Result<?> findPage(@RequestParam(defaultValue = "1") Integer pageNum,
+                              @RequestParam(defaultValue = "10") Integer pageSize,
+                              @RequestParam(defaultValue = "") String search) {
+        // new Page<>(pageNum, pageSize)这个是mybatis提供的分页对象
+        // Wrappers也是myBatisPlus提供的对象
+        //Page<User> userPage = userMapper.selectPage(new Page<>(pageNum,pageSize),Wrappers.<User>lambdaQuery().like(User::getUsername,search));
+        LambdaQueryWrapper<User> wrapper = Wrappers.<User>lambdaQuery();
+        if (StringUtils.isNotBlank(search)) {
+            wrapper.like(User::getUsername, search);
+        }
+        Page<User> userPage = userMapper.selectPage(new Page<>(pageNum, pageSize), wrapper);
+        return Result.success(userPage);
     }
 }
