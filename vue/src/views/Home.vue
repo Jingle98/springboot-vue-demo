@@ -29,7 +29,7 @@
           <el-button type="text" size="small" @click="handleEdit">编辑</el-button>
           <el-popconfirm title="确认删除么?">
             <template #reference>
-              <el-button type="text" size="small" @click="save">删除</el-button>
+              <el-button type="text" size="small">删除</el-button>
             </template>
           </el-popconfirm>
         </template>
@@ -71,7 +71,7 @@
         <template #footer>
           <span class="dialog-footer">
             <el-button @click="dialogVisible = false">Cancel</el-button>
-            <el-button type="primary" @click="dialogVisible = false">Confirm</el-button>
+            <el-button type="primary" @click="save">Confirm</el-button>
           </span>
         </template>
       </el-dialog>
@@ -80,6 +80,8 @@
 </template>
 
 <script>
+import request from "@/utils/request";
+
 export default {
   name: 'Home',
   components: {},
@@ -118,7 +120,11 @@ export default {
   methods:{
     save(){
       // form对象 传给后台
-
+      // 这个request是通过js封装的
+      // form这个参数传过去，然后返回结果
+      request.post("/api/user",this.form).then(res => {
+        console.log(res)
+      })
     },
     add(){
       this.dialogVisible = true

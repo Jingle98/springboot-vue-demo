@@ -28,6 +28,10 @@ public class UserController {
 //    收到之后，通过insert方法插入到数据库中
     @PostMapping
     public Result<?> save(@RequestBody User user){
+        if(user.getPassword() == null){
+            user.setPassword("123456");
+        }
+//        mybatisPlus提供的方法
         userMapper.insert(user);
         return Result.success();
     }

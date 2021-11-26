@@ -1,5 +1,8 @@
 import axios from 'axios'
 
+/**
+ * request 封装类，这样就在其他的地方使用request对象进行参数的传递
+ */
 const request = axios.create({
     timeout: 5000
 })
