@@ -113,6 +113,7 @@ export default {
         console.log(res)
         // 赋值，把res中的数据赋值给totalData
         this.tableData = res.data.records
+        this.total = res.data.total
       })
     },
     save(){
