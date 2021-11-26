@@ -43,7 +43,7 @@
           @current-change="handleCurrentChange"
           v-model:currentPage="currentPage"
           :page-sizes="[5, 10, 20]"
-          :page-size="10"
+          :page-size="pageSize"
           layout="total, sizes, prev, pager, next, jumper"
           :total="total"
       >
@@ -90,34 +90,29 @@ export default {
     return {
       form:{},
       search:'',
-      total:10,
+      total:0,
+      pageSize:10,
       currentPage:1,
       dialogVisible:false,
       tableData: [
-        {
-          date: '2016-05-03',
-          name: 'Tom',
-          address: 'No. 189, Grove St, Los Angeles',
-        },
-        {
-          date: '2016-05-02',
-          name: 'Tom',
-          address: 'No. 189, Grove St, Los Angeles',
-        },
-        {
-          date: '2016-05-04',
-          name: 'Tom',
-          address: 'No. 189, Grove St, Los Angeles',
-        },
-        {
-          date: '2016-05-01',
-          name: 'Tom',
-          address: 'No. 189, Grove St, Los Angeles',
-        },
       ],
     }
   },
+  created() {
+    // 在页面加载的时候调用load方法
+    this.load();
+  },
   methods:{
+    load(){
+      // 加载传过来的数据
+      request.get("/api/user",{
+        pageNum:this.currentPage,
+        pageSize:this.pageSize,
+        search:this.search
+      }).then(res => {
+        console.log(res)
+      })
+    },
     save(){
       // form对象 传给后台
       // 这个request是通过js封装的
