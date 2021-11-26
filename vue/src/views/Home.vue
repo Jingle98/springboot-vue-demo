@@ -8,8 +8,8 @@
     </div>
     <!--    搜索区域-->
     <div>
-      <el-input  v-model="search" placeholder="这是搜索框" style="width: 20%"></el-input>
-      <el-button type="primary" style="margin-left: 5px">搜索</el-button>
+      <el-input  v-model="search" placeholder="这是搜索框" style="width: 20%" clearable></el-input>
+      <el-button type="primary" style="margin-left: 5px" @click="load">搜索</el-button>
 
     </div>
     <!--这个是通过组件库使用的-->
@@ -106,9 +106,11 @@ export default {
     load(){
       // 加载传过来的数据
       request.get("/api/user",{
-        pageNum:this.currentPage,
-        pageSize:this.pageSize,
-        search:this.search
+        params:{
+          pageNum:this.currentPage,
+          pageSize:this.pageSize,
+          search:this.search
+        }
       }).then(res => {
         console.log(res)
         // 赋值，把res中的数据赋值给totalData
