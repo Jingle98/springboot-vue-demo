@@ -111,6 +111,8 @@ export default {
         search:this.search
       }).then(res => {
         console.log(res)
+        // 赋值，把res中的数据赋值给totalData
+        this.tableData = res.data.records
       })
     },
     save(){
