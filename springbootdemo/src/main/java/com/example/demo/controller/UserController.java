@@ -25,11 +25,12 @@ public class UserController {
     @Resource
     UserMapper userMapper;
 
-//    这个接口用来接收前端给的json数据
-//    收到之后，通过insert方法插入到数据库中
+    // 这个接口用来接收前端给的json数据
+    // 收到之后，通过insert方法插入到数据库中
+    // 新增
     @PostMapping
-    public Result<?> save(@RequestBody User user){
-        if(user.getPassword() == null){
+    public Result<?> save(@RequestBody User user) {
+        if (user.getPassword() == null) {
             user.setPassword("123456");
         }
 //        mybatisPlus提供的方法
@@ -37,11 +38,20 @@ public class UserController {
         return Result.success();
     }
 
+    // put一般用来更新
+    @PutMapping
+    public Result<?> update(@RequestBody User user) {
+//        mybatisPlus提供的方法
+        userMapper.updateById(user);
+        return Result.success();
+    }
+
     /**
      * 用户分页列表查询，包含书籍表的一对多查询
+     *
      * @param pageNum
      * @param pageSize
-     * @param search  在前台定义了关键字
+     * @param search   在前台定义了关键字
      * @return
      */
     @GetMapping

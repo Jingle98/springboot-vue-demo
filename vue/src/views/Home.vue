@@ -122,16 +122,26 @@ export default {
       // form对象 传给后台
       // 这个request是通过js封装的
       // form这个参数传过去，然后返回结果
-      request.post("/api/user",this.form).then(res => {
-        console.log(res)
-      })
+      if(this.form.id){
+        request.put("/api/user",this.form).then(res => {
+          console.log(res)
+        })
+      }else {
+        request.post("/api/user",this.form).then(res => {
+          console.log(res)
+        })
+      }
+
     },
     add(){
       this.dialogVisible = true
       this.form={}
     },
-    handleEdit(){
-
+    // 编辑函数
+    handleEdit(row){
+      // 弹窗的表单是和form绑定的【深拷贝】
+      this.form = JSON.parse(JSON.stringify(row))
+      this.dialogVisible = true // 打开弹窗
     },
     handleSizeChange(){
 

@@ -6,7 +6,7 @@ import com.baomidou.mybatisplus.annotation.TableName;
 import lombok.Data;
 
 /**
- * @ClassName Usere
+ * @ClassName User
  * @Description TODO
  * @Author Jingnan
  * @Date 2021/11/13 15:53
