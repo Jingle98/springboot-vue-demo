@@ -172,11 +172,16 @@ export default {
       this.form = JSON.parse(JSON.stringify(row))
       this.dialogVisible = true // 打开弹窗
     },
-    handleSizeChange(){
-
+    // 改变当前页码
+    handleSizeChange(pageSize){
+      // 只需要重新请求数据就可以了
+      this.pageSize = pageSize
+      this.load()
     },
-    handleCurrentChange(){
-
+    // 改变每页的页数的时候
+    handleCurrentChange(pageNum){
+      this.pageNum = pageNum
+      this.load()
     },
   }
 
