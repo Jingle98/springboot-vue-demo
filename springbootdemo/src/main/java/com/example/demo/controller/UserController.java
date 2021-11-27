@@ -1,6 +1,7 @@
 package com.example.demo.controller;
 
 import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
+import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.baomidou.mybatisplus.core.toolkit.StringUtils;
 import com.baomidou.mybatisplus.core.toolkit.Wrappers;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
@@ -24,6 +25,23 @@ public class UserController {
 
     @Resource
     UserMapper userMapper;
+
+    @PostMapping("/login")
+    // 用户名和密码用user对象进行接收
+    public Result<?> login(@RequestBody User user) {
+        QueryWrapper<User> queryWrapper = new QueryWrapper<>();
+        queryWrapper.eq("username", user.getUsername());
+        queryWrapper.eq("password", user.getPassword());
+        User res = userMapper.selectOne(queryWrapper);
+        if (res == null) {
+            return Result.error("-1", "用户名或密码错误");
+        }
+        // 生成token
+//        String token = TokenUtils.genToken(res);
+//        res.setToken(token);
+        return Result.success();
+    }
+
 
     // 这个接口用来接收前端给的json数据
     // 收到之后，通过insert方法插入到数据库中
