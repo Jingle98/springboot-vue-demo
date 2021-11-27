@@ -20,7 +20,7 @@
       <!--      prop表头-->
       <el-table-column prop="id" label="ID" sortable/>
       <el-table-column prop="username" label="Name"/>
-      <el-table-column prop="nickName" label="nickName"/>
+      <el-table-column prop="nickname" label="nickName"/>
       <el-table-column prop="age" label="age" sortable/>
       <el-table-column prop="sex" label="sex"/>
       <el-table-column prop="address" label="Address"/>
