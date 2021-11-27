@@ -46,6 +46,13 @@ public class UserController {
         return Result.success();
     }
 
+    // delete功能
+    @DeleteMapping("/{id}")
+    public Result<?> update(@PathVariable Long id) {
+        userMapper.deleteById(id);
+        return Result.success();
+    }
+
     /**
      * 用户分页列表查询，包含书籍表的一对多查询
      *

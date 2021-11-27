@@ -8,7 +8,7 @@
     </div>
     <!--    搜索区域-->
     <div>
-      <el-input  v-model="search" placeholder="这是搜索框" style="width: 20%" clearable></el-input>
+      <el-input v-model="search" placeholder="这是搜索框" style="width: 20%" clearable></el-input>
       <el-button type="primary" style="margin-left: 5px" @click="load">搜索</el-button>
 
     </div>
@@ -19,15 +19,15 @@
               style="width: 100%">
       <!--      prop表头-->
       <el-table-column prop="id" label="ID" sortable/>
-      <el-table-column prop="username" label="Name" />
-      <el-table-column prop="nickName" label="nickName" />
+      <el-table-column prop="username" label="Name"/>
+      <el-table-column prop="nickName" label="nickName"/>
       <el-table-column prop="age" label="age" sortable/>
-      <el-table-column prop="sex" label="sex" />
+      <el-table-column prop="sex" label="sex"/>
       <el-table-column prop="address" label="Address"/>
       <el-table-column fixed="right" label="Operations" width="120">
-        <template #default>
-          <el-button type="text" size="small" @click="handleEdit">编辑</el-button>
-          <el-popconfirm title="确认删除么?">
+        <template #default="scope">
+          <el-button type="text" size="small" @click="handleEdit(scope.row)">编辑</el-button>
+          <el-popconfirm title="确认删除么?" @confirm="handleDelete(scope.row.id)">
             <template #reference>
               <el-button type="text" size="small">删除</el-button>
             </template>
@@ -48,7 +48,7 @@
           :total="total"
       >
       </el-pagination>
-<!--      弹出框-->
+      <!--      弹出框-->
       <el-dialog v-model="dialogVisible" title="提示" width="30%">
         <el-form :model="form" label-width="120px">
           <el-form-item label="用户名">
@@ -88,28 +88,27 @@ export default {
   // 变量
   data() {
     return {
-      form:{},
-      search:'',
-      total:0,
-      pageSize:10,
-      currentPage:1,
-      dialogVisible:false,
-      tableData: [
-      ],
+      form: {},
+      search: '',
+      total: 0,
+      pageSize: 10,
+      currentPage: 1,
+      dialogVisible: false,
+      tableData: [],
     }
   },
   created() {
     // 在页面加载的时候调用load方法
     this.load();
   },
-  methods:{
-    load(){
+  methods: {
+    load() {
       // 加载传过来的数据
-      request.get("/api/user",{
-        params:{
-          pageNum:this.currentPage,
-          pageSize:this.pageSize,
-          search:this.search
+      request.get("/api/user", {
+        params: {
+          pageNum: this.currentPage,
+          pageSize: this.pageSize,
+          search: this.search
         }
       }).then(res => {
         console.log(res)
@@ -118,42 +117,42 @@ export default {
         this.total = res.data.total
       })
     },
-    save(){
+    save() {
       // form对象 传给后台
       // 这个request是通过js封装的
       // form这个参数传过去，然后返回结果
-      if(this.form.id){
+      if (this.form.id) {
         // 更新
-        request.put("/api/user",this.form).then(res => {
+        request.put("/api/user", this.form).then(res => {
           console.log(res)
           // 返回结果
-          if(res.code === '0'){
+          if (res.code === '0') {
             this.$message({
-              type:"success",
-              message:"更新成功"
+              type: "success",
+              message: "更新成功"
             })
-          }else {
-            this.message({
-              type:"error",
-              message:res.msg
+          } else {
+            this.$message({
+              type: "error",
+              message: res.msg
             })
           }
         })
         this.load()
         this.dialogVisible = false
-      }else {
-        request.post("/api/user",this.form).then(res => {
+      } else {
+        request.post("/api/user", this.form).then(res => {
           console.log(res)
           // 新增成功之后加一个提示：
-          if(res.code === '0'){
+          if (res.code === '0') {
             this.$message({
-              type:"success",
-              message:"新增成功"
+              type: "success",
+              message: "新增成功"
             })
-          }else {
-            this.message({
-              type:"error",
-              message:res.msg
+          } else {
+            this.$message({
+              type: "error",
+              message: res.msg
             })
           }
           this.load()
@@ -162,26 +161,45 @@ export default {
       }
 
     },
-    add(){
+    add() {
       this.dialogVisible = true
-      this.form={}
+      this.form = {}
     },
     // 编辑函数
-    handleEdit(row){
+    handleEdit(row) {
       // 弹窗的表单是和form绑定的【深拷贝】
       this.form = JSON.parse(JSON.stringify(row))
       this.dialogVisible = true // 打开弹窗
     },
     // 改变当前页码
-    handleSizeChange(pageSize){
+    handleSizeChange(pageSize) {
       // 只需要重新请求数据就可以了
       this.pageSize = pageSize
       this.load()
     },
     // 改变每页的页数的时候
-    handleCurrentChange(pageNum){
+    handleCurrentChange(pageNum) {
       this.pageNum = pageNum
       this.load()
+    },
+    // 改变每页的页数的时候
+    handleDelete(id) {
+      // 把这个id传给后台
+      console.log(id)
+      request.delete("/api/user/" + id).then(res => {
+        if (res.code === '0') {
+          this.$message({
+            type: "success",
+            message: "删除成功"
+          })
+        } else {
+          this.$message({
+            type: "error",
+            message: res.msg
+          })
+        }
+        this.load()
+      })
     },
   }
 
