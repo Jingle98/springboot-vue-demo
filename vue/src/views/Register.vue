@@ -10,10 +10,10 @@
             <el-input prefix-icon="el-icon-lock" v-model="form.password" show-password placeholder="请输入密码"></el-input>
           </el-form-item>
           <el-form-item prop="confirm">
-            <el-input prefix-icon="el-icon-lock" v-model="form.password" show-password placeholder="请输入密码"></el-input>
+            <el-input prefix-icon="el-icon-lock" v-model="form.confirm" show-password placeholder="请输入密码"></el-input>
           </el-form-item>
           <el-form-item >
-            <el-button style="width: 100%;" type="primary" @click="login">注册</el-button>
+            <el-button style="width: 100%;" type="primary" @click="register">注册</el-button>
           </el-form-item>
 
         </el-form>

@@ -42,6 +42,21 @@ public class UserController {
         return Result.success();
     }
 
+    @PostMapping("/register")
+    public Result<?> register(@RequestBody User user) {
+        User res = userMapper.selectOne(Wrappers.<User>lambdaQuery().eq(User::getUsername, user.getUsername()));
+        if (res != null) {
+            return Result.error("-1", "用户名重复");
+        }
+        // 前端密码没写
+        if (user.getPassword() == null) {
+            user.setPassword("123456");
+        }
+        userMapper.insert(user);
+        return Result.success();
+    }
+
+
 
     // 这个接口用来接收前端给的json数据
     // 收到之后，通过insert方法插入到数据库中
