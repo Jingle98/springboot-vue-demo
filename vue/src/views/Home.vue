@@ -123,12 +123,41 @@ export default {
       // 这个request是通过js封装的
       // form这个参数传过去，然后返回结果
       if(this.form.id){
+        // 更新
         request.put("/api/user",this.form).then(res => {
           console.log(res)
+          // 返回结果
+          if(res.code === '0'){
+            this.$message({
+              type:"success",
+              message:"更新成功"
+            })
+          }else {
+            this.message({
+              type:"error",
+              message:res.msg
+            })
+          }
         })
+        this.load()
+        this.dialogVisible = false
       }else {
         request.post("/api/user",this.form).then(res => {
           console.log(res)
+          // 新增成功之后加一个提示：
+          if(res.code === '0'){
+            this.$message({
+              type:"success",
+              message:"新增成功"
+            })
+          }else {
+            this.message({
+              type:"error",
+              message:res.msg
+            })
+          }
+          this.load()
+          this.dialogVisible = false
         })
       }
 
